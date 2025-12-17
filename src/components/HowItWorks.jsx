@@ -1,13 +1,24 @@
+import useScrollAnimation from '../hooks/useScrollAnimation';
+
 const HowItWorks = () => {
+    const [headerRef, headerVisible] = useScrollAnimation();
+    const [stepsRef, stepsVisible] = useScrollAnimation(0.2);
+
     return (
         <section className="how-it-works" id="hur-fungerar">
             <div className="container">
-                <div className="section-header">
+                <div
+                    ref={headerRef}
+                    className={`section-header ${headerVisible ? 'visible' : ''}`}
+                >
                     <h2>Så enkelt kommer du igång</h2>
                     <p>Tre steg är allt som krävs för att fakturera som privatperson. Du behöver inget företag, ingen F-skatt.</p>
                 </div>
 
-                <div className="steps">
+                <div
+                    ref={stepsRef}
+                    className={`steps ${stepsVisible ? 'visible' : ''}`}
+                >
                     <div className="step">
                         <div className="step-number">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

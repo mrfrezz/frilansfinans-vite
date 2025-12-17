@@ -1,8 +1,15 @@
+import useScrollAnimation from '../hooks/useScrollAnimation';
+
 const CTA = () => {
+    const [ref, isVisible] = useScrollAnimation(0.3);
+
     return (
         <section className="cta">
             <div className="container">
-                <div className="cta-content">
+                <div
+                    ref={ref}
+                    className={`cta-content ${isVisible ? 'visible' : ''}`}
+                >
                     <h2>Redo att ta kontrollen över ditt arbete?</h2>
                     <p>Skapa ett gratis konto på två minuter. Ingen bindningstid, inga startavgifter.</p>
                     <div className="cta-buttons">

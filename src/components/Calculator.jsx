@@ -1,7 +1,12 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
+import useScrollAnimation from '../hooks/useScrollAnimation';
 
 const Calculator = () => {
     const [invoiceAmount, setInvoiceAmount] = useState(25000);
+    const [isUpdating, setIsUpdating] = useState(false);
+    const [headerRef, headerVisible] = useScrollAnimation();
+    const [cardRef, cardVisible] = useScrollAnimation(0.2);
+    const timeoutRef = useRef(null);
 
     const calculateSalary = useCallback((amount) => {
         // Simplified calculation: 
@@ -20,16 +25,30 @@ const Calculator = () => {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
     };
 
+    const triggerUpdateAnimation = useCallback(() => {
+        setIsUpdating(true);
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        timeoutRef.current = setTimeout(() => setIsUpdating(false), 300);
+    }, []);
+
+    useEffect(() => {
+        return () => {
+            if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        };
+    }, []);
+
     const handleInputChange = (e) => {
         const value = e.target.value.replace(/\s/g, '');
         const numValue = parseInt(value) || 0;
         // Clamp between 0 and 1000000
         const clampedValue = Math.max(0, Math.min(1000000, numValue));
         setInvoiceAmount(clampedValue);
+        triggerUpdateAnimation();
     };
 
     const handleSliderChange = (e) => {
         setInvoiceAmount(parseInt(e.target.value));
+        triggerUpdateAnimation();
     };
 
     const resultAmount = calculateSalary(invoiceAmount);
@@ -38,7 +57,10 @@ const Calculator = () => {
         <section className="calculator" id="kalkylator">
             <div className="container">
                 <div className="calculator-wrapper">
-                    <div className="calculator-text">
+                    <div
+                        ref={headerRef}
+                        className={`calculator-text ${headerVisible ? 'animate-on-scroll visible' : 'animate-on-scroll'}`}
+                    >
                         <h2>Se vad du får ut</h2>
                         <p>Räkna enkelt ut vad som landar på ditt konto efter skatt och avgifter. Inga överraskningar, inga dolda kostnader.</p>
 
@@ -67,7 +89,10 @@ const Calculator = () => {
                         </div>
                     </div>
 
-                    <div className="calculator-card">
+                    <div
+                        ref={cardRef}
+                        className={`calculator-card ${cardVisible ? 'animate-on-scroll visible' : 'animate-on-scroll'}`}
+                    >
                         <div className="calc-input-group">
                             <label className="calc-label" htmlFor="invoiceAmount">Fakturabelopp (exkl. moms)</label>
                             <div className="calc-input-wrapper">
@@ -96,7 +121,9 @@ const Calculator = () => {
 
                         <div className="calc-result">
                             <div className="calc-result-label" id="calc-result-label">Din uppskattade nettolön</div>
-                            <div className="calc-result-amount">{formatNumber(resultAmount)} kr</div>
+                            <div className={`calc-result-amount ${isUpdating ? 'updating' : ''}`}>
+                                {formatNumber(resultAmount)} kr
+                            </div>
                             <div className="calc-result-sub">+ pension och försäkring</div>
                         </div>
                     </div>

@@ -1,4 +1,9 @@
+import useScrollAnimation from '../hooks/useScrollAnimation';
+
 const Benefits = () => {
+    const [headerRef, headerVisible] = useScrollAnimation();
+    const [gridRef, gridVisible] = useScrollAnimation(0.15);
+
     const benefits = [
         {
             icon: (
@@ -44,12 +49,18 @@ const Benefits = () => {
     return (
         <section className="benefits" id="fordelar">
             <div className="container">
-                <div className="section-header">
+                <div
+                    ref={headerRef}
+                    className={`section-header ${headerVisible ? 'visible' : ''}`}
+                >
                     <h2>Allt du behöver. Inget du inte behöver.</h2>
                     <p>Vi har gjort det enkelt att vara egenanställd i över 25 år. Det märks.</p>
                 </div>
 
-                <div className="benefits-grid">
+                <div
+                    ref={gridRef}
+                    className={`benefits-grid ${gridVisible ? 'visible' : ''}`}
+                >
                     {benefits.map((benefit, index) => (
                         <div className="benefit-card" key={index}>
                             <div className="benefit-icon">

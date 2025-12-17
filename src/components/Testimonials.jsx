@@ -1,4 +1,9 @@
+import useScrollAnimation from '../hooks/useScrollAnimation';
+
 const Testimonials = () => {
+    const [headerRef, headerVisible] = useScrollAnimation();
+    const [gridRef, gridVisible] = useScrollAnimation(0.15);
+
     const testimonials = [
         {
             text: '"Äntligen kan jag fokusera på det jag är bra på istället för bokföring och administration. Frilans Finans gör allt så enkelt."',
@@ -29,12 +34,18 @@ const Testimonials = () => {
     return (
         <section className="testimonials">
             <div className="container">
-                <div className="section-header">
+                <div
+                    ref={headerRef}
+                    className={`section-header ${headerVisible ? 'visible' : ''}`}
+                >
                     <h2>150 000 frilansare kan inte ha fel</h2>
                     <p>Läs vad våra egenanställda tycker om att fakturera genom Frilans Finans.</p>
                 </div>
 
-                <div className="testimonials-grid">
+                <div
+                    ref={gridRef}
+                    className={`testimonials-grid ${gridVisible ? 'visible' : ''}`}
+                >
                     {testimonials.map((testimonial, index) => (
                         <div className="testimonial-card" key={index}>
                             <div className="testimonial-stars">
