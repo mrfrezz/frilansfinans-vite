@@ -5,11 +5,7 @@ const Footer = () => {
                 <div className="footer-grid">
                     <div className="footer-brand">
                         <a href="/" className="logo">
-                            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="40" height="40" rx="8" fill="white" />
-                                <path d="M12 14h16v3H12V14zm0 5h12v3H12v-3zm0 5h8v3h-8v-3z" fill="#04567D" />
-                            </svg>
-                            Frilans Finans
+                            <img src="/assets/logo-white.svg" alt="Frilans Finans" />
                         </a>
                         <p>Sveriges ledande egenanställningsföretag sedan 1999. Vi gör det möjligt att fakturera utan eget företag – enkelt, tryggt och med full support.</p>
                     </div>

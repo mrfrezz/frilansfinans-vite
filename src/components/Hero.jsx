@@ -1,6 +1,26 @@
+import { useState, useEffect } from 'react';
+
 const Hero = () => {
+    const [scrollY, setScrollY] = useState(0);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrollY(window.scrollY);
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     return (
         <section className="hero">
+            {/* Parallax Background */}
+            <div
+                className="hero-parallax-bg"
+                style={{ transform: `translateY(${scrollY * 0.4}px)` }}
+            />
+            <div className="hero-overlay" />
+
             <div className="container">
                 <div className="hero-content">
                     <div className="hero-text">
